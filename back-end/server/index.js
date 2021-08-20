@@ -40,9 +40,9 @@ app.get("/api/fortune", (req, res) => {
   res.status(200).send(randomfortune)
 })
 
-app.post("/api/fortune", (req, res) => {
-  fortunes.push(req.body.value)
-  console.log(req.body)
+app.post("/api/fortuneUpdate", (req, res) => {
+  fortunes.push(req.body.fortune)
+  console.log(req.body.fortune)
   res.status(200).send(fortunes)
 })
 

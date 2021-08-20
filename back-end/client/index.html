@@ -43,11 +43,14 @@
 
       fortuneSubmit.onclick = function (e) {
         e.preventDefault()
-        let newFortune = document.getElementById('fortuneText').value
-        console.log(newFortune)
-        axios.post("http://localhost:4000/api/fortune/", newFortune).then((res) => {
-          alert(res.data)
-        })
+        let newFortune = document.getElementById('fortuneText')
+        const fortuneBody = {
+          fortune: newFortune.value
+        }
+        console.log(fortuneBody)
+        axios.post("http://localhost:4000/api/fortuneUpdate/", fortuneBody).then((res => {
+          alert('Update sucessful')
+        }))
       }
 
       document.getElementById('foodButton').onclick = function (e) {
