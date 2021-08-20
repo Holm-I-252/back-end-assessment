@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Back End Assessment</title>
+  </head>
+  <body class="container">
+    <button id="complimentButton">Get a compliment</button><br><br>
+
+    <button id='fortuneButton'>Get a fortune</button><br>
+    <form>
+      <input type='text' id="fortuneText" placeholder="Add a fortune to the list">
+      <button id='submitFortune'>Submit</button>
+    </form><br>
+
+    <button id='foodButton'>Get a restaurant</button><br><br>
+
+    <h4>Pokemon Team Builder</h4>
+    <form id="pokemon">
+      <input type='text' id='pokeInput' placeholder="Enter a Pokemon"><br><br>
+      <button id='pokeButton'>Submit</button>
+    </form>
+
+    <div id="pokeContainer"></div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      document.getElementById("complimentButton").onclick = function () {
+        axios.get("http://localhost:4000/api/compliment/")
+            .then(function (response) {
+              const data = response.data;
+              alert(data);
+            });
+      };
+
+      document.getElementById("fortuneButton").onclick = function () {
+        axios.get("http://localhost:4000/api/fortune/").then((res) => {
+          const data = res.data
+          alert(data)
+        })
+      }
+
+      let fortuneSubmit = document.getElementById('submitFortune')
+
+      fortuneSubmit.onclick = function (e) {
+        e.preventDefault()
+        let newFortune = document.getElementById('fortuneText').value
+        console.log(newFortune)
+        axios.post("http://localhost:4000/api/fortune/", newFortune).then((res) => {
+          alert(res.data)
+        })
+      }
+
+      document.getElementById('foodButton').onclick = function (e) {
+        e.preventDefault()
+        axios.get('http://localhost:4000/api/food').then((res) => {
+          const data = res.data
+        })
+      }
+
+      let pokeId = 0;
+      
+      document.getElementById('pokeButton').onclick = function (e) {
+        e.preventDefault()
+        if (pokeId < 6) {
+        let pokeName = document.getElementById('pokeInput')
+        axios.get(`https://pokeapi.co/api/v2/pokemon/${pokeName.value}`).then((res) => {
+          const data = res.data
+          const type = res.data.types
+
+          console.log(type)
+          function pokeSend (data) {
+            let pokeObj = document.createElement('div')
+            pokeObj.classList.add(`pokeObject${pokeId}`)
+            pokeObj.innerHTML = `<p>${data.name}</p>
+            <img src=${data.sprites.front_default}>`
+            document.getElementById('pokeContainer').append(pokeObj)
+            pokeName.value = ''
+            }
+            pokeSend(data)
+            pokeId++;
+          })
+        } else {
+          alert('Team is full')
+        }
+      }
+
+      // document.getElementById('pokeDelete').onclick = function () {
+      //   axios.delete('https://localhost:4000/api/pokemon/', )
+      // }
+
+    </script>
+  </body>
+</html>
